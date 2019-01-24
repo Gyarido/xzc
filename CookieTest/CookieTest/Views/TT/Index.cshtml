@@ -1,0 +1,81 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(function () {
+
+        })
+        function login() {
+            $.ajax({
+                url: '/TT/islogin',
+                type: 'post',
+                data: {
+                    username: $("#username").val(),
+                    pwd: $("#pwd").val()
+                },
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    if (data.ckName == '3') {
+                        alert("lock")
+                        $("#div1").show();
+                        return;
+                    }
+                    if (data.ckName != '登录失败' && data.ckName != '3') {
+                        alert("成功");
+                        location.href = '/TT/two?username=' + data.ckName;
+                        //$("#Text1").val(data.ckName);
+                        
+                        
+                    }
+                    else {
+                        alert("失败");
+                    }
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div> 
+        <input id="username" type="text" /><br />
+        <input id="pwd" type="text" /><br />
+        <input id="Button1" type="button" value="login" onclick="login()" /><br />
+        <div style="display:none" id="div1"><img src="/TT/SecurityCode" onclick="this.src+='?new Date()'" />
+            <input id="Text1" type="text" /></div>
+       
+
+        <input id="Text1" type="text" />
+        <input id="dc" type="text" />
+    </div>
+</body>
+</html>
+<script>
+    $("#dc").click(function () {
+        $.ajax({
+            url: '/TT/Daochu',
+            type: 'post',
+            dataType: 'text',
+            success: function (da) {
+                if (da != null) {
+                    alert("OK");
+                }
+
+            }
+        })
+    })
+</script>
